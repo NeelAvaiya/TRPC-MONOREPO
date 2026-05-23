@@ -1,7 +1,8 @@
+import "dotenv/config";
 import { z } from "zod";
 
 const envSchema = z.object({
-
+  JWT_SECRET: z.string().describe('Secret key for JWT Tokens')
 });
 
 function createEnv(env: NodeJS.ProcessEnv) {
