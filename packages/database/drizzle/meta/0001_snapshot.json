@@ -1,6 +1,6 @@
 {
-  "id": "a944919a-fb33-458c-915f-7d1c0f956e32",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "0666623b-388f-42bb-9871-cb60946fc2bc",
+  "prevId": "a944919a-fb33-458c-915f-7d1c0f956e32",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -36,6 +36,18 @@
         },
         "profile_image_url": {
           "name": "profile_image_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salt": {
+          "name": "salt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
           "type": "text",
           "primaryKey": false,
           "notNull": false
