@@ -19,3 +19,10 @@ export const signinUserWithEmailAndPasswordOutputModel = z.object({
     id: z.string().describe('id of the user created')
 })
 
+export const getLoggoedInUserInfoInputModel = z.undefined()
+export const getLoggoedInUserInfoOutputModel = z.object({
+    id: z.string().describe('id of the user created'),
+    email: z.email().describe('email address of the user'),
+    fullName: z.string().describe('name of the user'),
+    profileImageUrl: z.string().url().describe('profile image url of the user').optional().nullable()
+})
