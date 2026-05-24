@@ -2,7 +2,7 @@ import {createHmac, randomBytes} from 'node:crypto'
 import * as JWT from 'jsonwebtoken'
 import {db, eq} from '@repo/database'
 import {usersTable} from '@repo/database/models/user'
-import { type CreateUserWithEmailAndPasswordInputType, GenrateUserTokenPayloadType, createUserWithEmailAndPasswordInput, genrateUserTokenPayload } from "./model"
+import { type CreateUserWithEmailAndPasswordInputType, GenrateUserTokenPayloadType, SigninUserWithEmailAndPasswordInputType, createUserWithEmailAndPasswordInput, genrateUserTokenPayload, signinUserWithEmailAndPasswordInput } from "./model"
 import { env } from '../env'
 
 class UserService {
@@ -40,6 +40,25 @@ class UserService {
 
         return {
             id: userId,
+            token
+        }
+    }
+
+    public async signInWithEmailAndPassword(payload: SigninUserWithEmailAndPasswordInputType) {
+        const {email, password} = await signinUserWithEmailAndPasswordInput.parseAsync(payload)
+        const existingUser = await this.getUserByEmail(email)
+        if(!existingUser) throw new Error(`user with email ${email} does not exist`);
+
+        if(!existingUser.password || !existingUser.salt) throw new Error(`invalid authentication method`);
+
+        const hash = createHmac('sha256', existingUser.salt).update(password).digest('hex');    
+
+        if(hash !== existingUser.password) throw new Error(`invalid password`);
+
+        const {token} = await this.genrateUserToken({ id: existingUser.id })
+
+        return {
+            id: existingUser.id,
             token
         }
     }
